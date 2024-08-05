@@ -5,17 +5,19 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { useActiveTrack } from "react-native-track-player";
 import { colors, fontSize, images } from "../utils/constants";
+import { Entypo } from "@expo/vector-icons";
 interface Props {
   thumbnailUrl?: string;
   title: string;
   artist?: string;
 }
 export default function TrackItem({ thumbnailUrl, title, artist }: Props) {
-  const isActiveTrack = false;
+  const isActiveTrack =
+    useActiveTrack()?.url === thumbnailUrl && thumbnailUrl !== undefined;
   return (
     <TouchableHighlight>
       <View style={styles.container}>
@@ -23,6 +25,7 @@ export default function TrackItem({ thumbnailUrl, title, artist }: Props) {
           source={thumbnailUrl ? { uri: thumbnailUrl } : images.unknown_track}
           style={{ ...styles.image, opacity: isActiveTrack ? 0.6 : 1 }}
         />
+
         <View style={styles.infoContainer}>
           <Text
             style={{
@@ -44,6 +47,8 @@ export default function TrackItem({ thumbnailUrl, title, artist }: Props) {
             </Text>
           )}
         </View>
+
+        <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
       </View>
     </TouchableHighlight>
   );

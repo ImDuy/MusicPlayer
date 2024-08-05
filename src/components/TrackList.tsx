@@ -1,9 +1,9 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Track } from "../@type/Track";
 import { colors, screenPadding, tabBarHeight } from "../utils/constants";
 import TrackItem from "./TrackItem";
+import { Track } from "react-native-track-player";
 
 interface Props {
   tracks: Track[];
@@ -21,7 +21,7 @@ export default function TrackList({ tracks }: Props) {
       renderItem={({ item }) => (
         <TrackItem
           thumbnailUrl={item.artwork}
-          title={item.title}
+          title={item.title ?? ""}
           artist={item.artist}
         />
       )}

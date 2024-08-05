@@ -1,4 +1,4 @@
-import { Track } from "../../src/@type/Track";
+import { Track } from "react-native-track-player";
 
 export const tracks: Track[] = [
   {

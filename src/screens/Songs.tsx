@@ -1,11 +1,9 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import TrackList from "../components/TrackList";
-import { tabBarHeight } from "../utils/constants";
-import { useNavigationSearch } from "../hooks/useSearchNavigation";
 import { tracks } from "../../assets/data/library";
-import { Track } from "../@type/Track";
+import TrackList from "../components/TrackList";
+import { useNavigationSearch } from "../hooks/useNavigationSearch";
+import { Track } from "react-native-track-player";
 
 export default function Songs() {
   const search = useNavigationSearch({ placeholder: "Find in songs" });
@@ -13,7 +11,7 @@ export default function Songs() {
   const filteredSongs = useMemo(() => {
     if (!search) return tracks;
     return tracks.filter((song: Track) =>
-      song.title.toLowerCase().includes(search.toLowerCase().trim())
+      song.title?.toLowerCase().includes(search.toLowerCase().trim())
     );
   }, [search]);
   return (
