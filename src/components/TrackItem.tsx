@@ -7,9 +7,11 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import { useActiveTrack } from "react-native-track-player";
+import { useActiveTrack, useIsPlaying } from "react-native-track-player";
 import { colors, fontSize, images } from "../utils/constants";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
+import LoaderKit from "react-native-loader-kit";
+
 interface Props {
   trackUrl: string;
   thumbnailUrl?: string;
@@ -25,6 +27,7 @@ export default function TrackItem({
   onTrackPress,
 }: Props) {
   const isActiveTrack = useActiveTrack()?.url === trackUrl;
+  const { playing } = useIsPlaying();
   return (
     <TouchableHighlight
       onPress={onTrackPress}
@@ -33,10 +36,27 @@ export default function TrackItem({
       style={styles.wrapper}
     >
       <View style={styles.container}>
-        <Image
-          source={thumbnailUrl ? { uri: thumbnailUrl } : images.unknown_track}
-          style={{ ...styles.image, opacity: isActiveTrack ? 0.6 : 1 }}
-        />
+        <View>
+          <Image
+            source={thumbnailUrl ? { uri: thumbnailUrl } : images.unknown_track}
+            style={{ ...styles.image, opacity: isActiveTrack ? 0.6 : 1 }}
+          />
+          {isActiveTrack &&
+            (playing ? (
+              <LoaderKit
+                name="LineScaleParty"
+                color={colors.primary}
+                style={styles.trackPlayingIconIndicator}
+              />
+            ) : (
+              <Ionicons
+                name="play"
+                size={24}
+                color={colors.primary}
+                style={styles.trackPausedIconIndicator}
+              />
+            ))}
+        </View>
 
         <View style={styles.infoContainer}>
           <Text
@@ -92,5 +112,17 @@ const styles = StyleSheet.create({
   artist: {
     fontSize: fontSize.xs,
     marginTop: 4,
+  },
+  trackPlayingIconIndicator: {
+    position: "absolute",
+    top: 17,
+    left: 18,
+    width: 16,
+    height: 16,
+  },
+  trackPausedIconIndicator: {
+    position: "absolute",
+    top: 14,
+    left: 15,
   },
 });
