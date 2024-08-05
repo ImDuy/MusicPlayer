@@ -9,11 +9,11 @@ import { BlurView } from "expo-blur";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Artists from "../screens/Artists";
-import Favorites from "../screens/Favorites";
-import Playlists from "../screens/Playlists";
-import Songs from "../screens/Songs";
-import { colors, fontSize } from "../utils/constants";
+import { colors, fontSize, tabBarHeight } from "../utils/constants";
+import ArtistsStack from "./ArtistsStack";
+import FavoritesStack from "./FavoritesStack";
+import PlaylistsStack from "./PlaylistsStack";
+import SongsStack from "./SongsStack";
 import { TabParamList } from "./TypeCheck";
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -21,21 +21,9 @@ export default function TabNavigator() {
   const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
-      initialRouteName="Songs"
+      initialRouteName="SongsStack"
       screenOptions={{
-        // tab headers
-        headerTransparent: true,
-        headerTintColor: colors.text,
-        headerTitleAlign: "left",
-        headerShadowVisible: false,
-        headerStyle: {
-          height: 90 + insets.top,
-        },
-        headerTitleStyle: {
-          fontSize: 30,
-          marginLeft: 4,
-        },
-
+        headerShown: false,
         // bottom tab bar
         tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: {
@@ -45,12 +33,12 @@ export default function TabNavigator() {
         },
         tabBarBackground: () => (
           <BlurView
-            // experimentalBlurMethod="dimezisBlurView"
-            intensity={Platform.OS === "android" ? 15 : 95}
+            experimentalBlurMethod="dimezisBlurView"
+            intensity={Platform.OS === "android" ? 30 : 90}
             style={{
               ...StyleSheet.absoluteFillObject,
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
               overflow: "hidden",
             }}
           />
@@ -58,15 +46,15 @@ export default function TabNavigator() {
         tabBarStyle: {
           position: "absolute",
           borderTopWidth: 0,
-          height: 54 + insets.bottom,
+          height: tabBarHeight + insets.bottom,
           paddingTop: 2,
         },
+        tabBarInactiveTintColor: colors.textMuted,
       }}
-      sceneContainerStyle={{ backgroundColor: colors.background }}
     >
       <Tab.Screen
-        name="Favorites"
-        component={Favorites}
+        name="FavoritesStack"
+        component={FavoritesStack}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="heart" size={20} color={color} />
@@ -74,8 +62,8 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Playlists"
-        component={Playlists}
+        name="PlaylistsStack"
+        component={PlaylistsStack}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
@@ -87,8 +75,8 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Songs"
-        component={Songs}
+        name="SongsStack"
+        component={SongsStack}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="musical-note-sharp" size={22} color={color} />
@@ -96,8 +84,8 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Artists"
-        component={Artists}
+        name="ArtistsStack"
+        component={ArtistsStack}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="users-line" size={20} color={color} />

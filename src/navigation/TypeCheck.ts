@@ -3,8 +3,8 @@ export type RootStackParamList = {
 };
 
 export type TabParamList = {
-  Favorites: undefined;
-  Playlists: undefined;
-  Artists: undefined;
-  Songs: undefined;
+  FavoritesStack: undefined;
+  PlaylistsStack: undefined;
+  ArtistsStack: undefined;
+  SongsStack: undefined;
 };
