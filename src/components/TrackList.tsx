@@ -10,6 +10,10 @@ interface Props {
 }
 export default function TrackList({ tracks }: Props) {
   const insets = useSafeAreaInsets();
+
+  const onTrackSelect = (track: Track) => {
+    console.log(track);
+  };
   return (
     <FlatList
       data={tracks}
@@ -23,6 +27,7 @@ export default function TrackList({ tracks }: Props) {
           thumbnailUrl={item.artwork}
           title={item.title ?? ""}
           artist={item.artist}
+          onTrackPress={() => onTrackSelect(item)}
         />
       )}
       ItemSeparatorComponent={() => <View style={styles.lineSeparator} />}
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
     borderColor: colors.textMuted,
     borderWidth: StyleSheet.hairlineWidth,
     opacity: 0.3,
-    marginVertical: 12,
+    marginVertical: 4,
     marginHorizontal: 6,
   },
 });

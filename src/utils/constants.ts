@@ -4,6 +4,7 @@ export const colors = {
   primary: "#f34d53",
   light_primary: "#fc3c44",
   background: "#000",
+  light_background: "#252525",
   text: "#fff",
   textMuted: "#9ca3af",
   icon: "#fff",
@@ -25,7 +26,7 @@ export const fontSize = {
 };
 
 export const screenPadding = {
-  horizontal: 24,
+  horizontal: 16,
 };
 
 export const screenSize = {

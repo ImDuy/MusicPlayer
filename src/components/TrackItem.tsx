@@ -14,12 +14,23 @@ interface Props {
   thumbnailUrl?: string;
   title: string;
   artist?: string;
+  onTrackPress?: () => void;
 }
-export default function TrackItem({ thumbnailUrl, title, artist }: Props) {
+export default function TrackItem({
+  thumbnailUrl,
+  title,
+  artist,
+  onTrackPress,
+}: Props) {
   const isActiveTrack =
     useActiveTrack()?.url === thumbnailUrl && thumbnailUrl !== undefined;
   return (
-    <TouchableHighlight>
+    <TouchableHighlight
+      onPress={onTrackPress}
+      activeOpacity={0.6}
+      underlayColor="#171616"
+      style={styles.wrapper}
+    >
       <View style={styles.container}>
         <Image
           source={thumbnailUrl ? { uri: thumbnailUrl } : images.unknown_track}
@@ -55,10 +66,15 @@ export default function TrackItem({ thumbnailUrl, title, artist }: Props) {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 8,
+  },
   container: {
     flexDirection: "row",
     gap: 20,
     alignItems: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 8,
   },
   image: {
     width: 50,
