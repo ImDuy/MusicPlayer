@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 17,
     left: 18,
-    width: 16,
-    height: 16,
+    width: 18,
+    height: 18,
   },
   trackPausedIconIndicator: {
     position: "absolute",
