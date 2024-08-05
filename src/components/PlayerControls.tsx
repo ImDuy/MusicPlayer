@@ -14,6 +14,7 @@ export const PlayPauseButton = ({ iconSize }: Props) => {
       onPress={() => {
         playing ? TrackPlayer.pause() : TrackPlayer.play();
       }}
+      style={styles.container}
     >
       <FontAwesome
         name={playing ? "pause" : "play"}
@@ -30,6 +31,7 @@ export const SkipToNextButton = ({ iconSize }: Props) => {
       onPress={() => {
         TrackPlayer.skipToNext();
       }}
+      style={styles.container}
     >
       <FontAwesome6 name="forward" size={iconSize} color={colors.icon} />
     </TouchableOpacity>
@@ -42,10 +44,18 @@ export const SkipToPrevious = ({ iconSize }: Props) => {
       onPress={() => {
         TrackPlayer.skipToPrevious();
       }}
+      style={styles.container}
     >
       <FontAwesome6 name="backward" size={iconSize} color={colors.icon} />
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    // backgroundColor: "red",
+    padding: 10,
+    paddingVertical: 12,
+    borderRadius: 40,
+  },
+});

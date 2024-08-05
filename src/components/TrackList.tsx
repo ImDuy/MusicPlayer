@@ -1,9 +1,15 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors, screenPadding, tabBarHeight } from "../utils/constants";
+import TrackPlayer, { Track } from "react-native-track-player";
+import {
+  colors,
+  fontSize,
+  images,
+  screenPadding,
+  tabBarHeight,
+} from "../utils/constants";
 import TrackItem from "./TrackItem";
-import { Track } from "react-native-track-player";
 
 interface Props {
   tracks: Track[];
@@ -11,8 +17,9 @@ interface Props {
 export default function TrackList({ tracks }: Props) {
   const insets = useSafeAreaInsets();
 
-  const onTrackSelect = (track: Track) => {
-    console.log(track);
+  const onTrackSelect = async (track: Track) => {
+    await TrackPlayer.load(track);
+    await TrackPlayer.play();
   };
   return (
     <FlatList
@@ -24,6 +31,7 @@ export default function TrackList({ tracks }: Props) {
       contentInsetAdjustmentBehavior="automatic"
       renderItem={({ item }) => (
         <TrackItem
+          trackUrl={item.url}
           thumbnailUrl={item.artwork}
           title={item.title ?? ""}
           artist={item.artist}
@@ -31,6 +39,15 @@ export default function TrackList({ tracks }: Props) {
         />
       )}
       ItemSeparatorComponent={() => <View style={styles.lineSeparator} />}
+      ListEmptyComponent={() => (
+        <View>
+          <Text style={styles.emptyListInfomedText}>No songs found</Text>
+          <Image
+            source={images.unknown_track}
+            style={styles.emptyListInformedImage}
+          />
+        </View>
+      )}
     />
   );
 }
@@ -45,5 +62,19 @@ const styles = StyleSheet.create({
     opacity: 0.3,
     marginVertical: 4,
     marginHorizontal: 6,
+  },
+  emptyListInfomedText: {
+    fontSize: fontSize.base,
+    color: colors.textMuted,
+    fontStyle: "italic",
+    textAlign: "center",
+    marginTop: 20,
+  },
+  emptyListInformedImage: {
+    width: 200,
+    height: 200,
+    marginVertical: 40,
+    alignSelf: "center",
+    opacity: 0.3,
   },
 });

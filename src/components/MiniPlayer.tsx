@@ -12,25 +12,20 @@ import { PlayPauseButton, SkipToNextButton } from "./PlayerControls";
 
 export default function MiniPlayer({ style }: ViewProps) {
   const activeTrack: Track | undefined = useActiveTrack();
-
-  const displayedTrack = activeTrack ?? {
-    title: "This is a test ",
-    artwork: undefined,
-  };
-  if (!displayedTrack) return;
+  if (!activeTrack) return;
 
   return (
-    <TouchableOpacity style={[styles.container, style]}>
+    <TouchableOpacity style={[styles.container, style]} activeOpacity={0.9}>
       <Image
         source={
-          displayedTrack.artwork
-            ? { uri: displayedTrack.artwork }
+          activeTrack.artwork
+            ? { uri: activeTrack.artwork }
             : images.unknown_track
         }
         style={styles.image}
       />
       <Text style={styles.title} numberOfLines={1}>
-        {displayedTrack.title}
+        {activeTrack.title}
       </Text>
 
       <PlayPauseButton iconSize={22} />
@@ -45,7 +40,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     alignItems: "center",
-    gap: 20,
+    gap: 4,
     backgroundColor: colors.light_background,
     borderRadius: 8,
   },
@@ -55,9 +50,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   title: {
-    fontSize: fontSize.base,
+    fontSize: fontSize.base - 1,
     fontWeight: "700",
     color: colors.text,
     flex: 1,
+    marginHorizontal: 8,
   },
 });

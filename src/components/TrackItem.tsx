@@ -11,19 +11,20 @@ import { useActiveTrack } from "react-native-track-player";
 import { colors, fontSize, images } from "../utils/constants";
 import { Entypo } from "@expo/vector-icons";
 interface Props {
+  trackUrl: string;
   thumbnailUrl?: string;
   title: string;
   artist?: string;
   onTrackPress?: () => void;
 }
 export default function TrackItem({
+  trackUrl,
   thumbnailUrl,
   title,
   artist,
   onTrackPress,
 }: Props) {
-  const isActiveTrack =
-    useActiveTrack()?.url === thumbnailUrl && thumbnailUrl !== undefined;
+  const isActiveTrack = useActiveTrack()?.url === trackUrl;
   return (
     <TouchableHighlight
       onPress={onTrackPress}
