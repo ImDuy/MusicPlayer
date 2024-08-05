@@ -15,6 +15,7 @@ export default function MiniPlayer({ style }: ViewProps) {
 
   const displayedTrack = activeTrack ?? {
     title: "This is a test ",
+    artwork: undefined,
   };
   if (!displayedTrack) return;
 
