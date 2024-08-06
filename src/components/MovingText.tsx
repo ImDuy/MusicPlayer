@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import React, { useEffect, useLayoutEffect } from "react";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -38,7 +37,7 @@ export default function MovingText({ text, animationThreshold, style }: Props) {
       cancelAnimation(translateX);
       translateX.value = 0;
     };
-  }, [translateX, shouldAnimate, textTransitionValue]);
+  }, [text, translateX, shouldAnimate, textTransitionValue]);
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],
@@ -49,7 +48,7 @@ export default function MovingText({ text, animationThreshold, style }: Props) {
       numberOfLines={1}
       style={[
         style,
-        animatedStyle,
+        shouldAnimate && animatedStyle,
         shouldAnimate && {
           width: 99999, // preventing the ellipsis (...) tail from appearing
         },
@@ -59,5 +58,3 @@ export default function MovingText({ text, animationThreshold, style }: Props) {
     </Animated.Text>
   );
 }
-
-const styles = StyleSheet.create({});

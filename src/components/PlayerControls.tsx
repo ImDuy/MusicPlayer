@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import TrackPlayer, { useIsPlaying } from "react-native-track-player";
-import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import { colors } from "../utils/constants";
 
 interface Props {
@@ -11,12 +11,10 @@ export const PlayPauseButton = ({ iconSize }: Props) => {
   const { playing } = useIsPlaying();
   return (
     <TouchableOpacity
-      onPress={() => {
-        playing ? TrackPlayer.pause() : TrackPlayer.play();
-      }}
+      onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
       style={styles.container}
     >
-      <FontAwesome
+      <FontAwesome6
         name={playing ? "pause" : "play"}
         size={iconSize}
         color={colors.icon}
@@ -53,7 +51,6 @@ export const SkipToPrevious = ({ iconSize }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "red",
     padding: 10,
     paddingVertical: 12,
     borderRadius: 40,

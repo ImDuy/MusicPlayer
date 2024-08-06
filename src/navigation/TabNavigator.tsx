@@ -58,6 +58,7 @@ export default function TabNavigator() {
           name="FavoritesStack"
           component={FavoritesStack}
           options={{
+            tabBarLabel: "Favorites",
             tabBarIcon: ({ color }) => (
               <FontAwesome name="heart" size={20} color={color} />
             ),
@@ -67,6 +68,7 @@ export default function TabNavigator() {
           name="PlaylistsStack"
           component={PlaylistsStack}
           options={{
+            tabBarLabel: "Playlists",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name="playlist-play"
@@ -80,6 +82,7 @@ export default function TabNavigator() {
           name="SongsStack"
           component={SongsStack}
           options={{
+            tabBarLabel: "Songs",
             tabBarIcon: ({ color }) => (
               <Ionicons name="musical-note-sharp" size={22} color={color} />
             ),
@@ -89,6 +92,7 @@ export default function TabNavigator() {
           name="ArtistsStack"
           component={ArtistsStack}
           options={{
+            tabBarLabel: "Artists",
             tabBarIcon: ({ color }) => (
               <FontAwesome6 name="users-line" size={20} color={color} />
             ),

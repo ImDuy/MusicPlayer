@@ -32,12 +32,8 @@ export default function MiniPlayer({ style }: ViewProps) {
         />
       </View>
 
-      {/* <Text style={styles.title} numberOfLines={1}>
-        {activeTrack.title}
-      </Text> */}
-
-      <PlayPauseButton iconSize={22} />
-      <SkipToNextButton iconSize={22} />
+      <PlayPauseButton iconSize={23} />
+      <SkipToNextButton iconSize={23} />
     </TouchableOpacity>
   );
 }
