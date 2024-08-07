@@ -1,6 +1,4 @@
-import { Track } from "react-native-track-player";
-
-export const tracks: Track[] = [
+export const tracks = [
   {
     url: "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw",
     title: "Guess I'll Never Know",

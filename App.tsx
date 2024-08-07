@@ -6,6 +6,8 @@ import { StyleSheet } from "react-native";
 import { useTrackPlayerSetup } from "./src/hooks/useTrackPlayerSetup";
 import RootStack from "./src/navigation/RootStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -18,11 +20,13 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <NavigationContainer>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <RootStack />
-        </GestureHandlerRootView>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <RootStack />
+          </GestureHandlerRootView>
+        </NavigationContainer>
+      </Provider>
     </>
   );
 }

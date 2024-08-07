@@ -7,14 +7,23 @@ import {
   Text,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, { Track } from "react-native-track-player";
-import { colors, fontSize, images, screenPadding } from "../utils/constants";
+import {
+  colors,
+  fontSize,
+  images,
+  screenPadding,
+  tabBarHeight,
+} from "../utils/constants";
 import TrackItem from "./TrackItem";
 
 interface Props extends Partial<FlatListProps<Track>> {
   tracks: Track[];
 }
 export default function TrackList({ tracks, ...flatListProps }: Props) {
+  const insets = useSafeAreaInsets();
+
   const onTrackSelect = async (track: Track) => {
     await TrackPlayer.load(track);
     await TrackPlayer.play();
@@ -23,7 +32,10 @@ export default function TrackList({ tracks, ...flatListProps }: Props) {
     <FlatList
       {...flatListProps}
       data={tracks}
-      contentContainerStyle={styles.contentContainerStyle}
+      contentContainerStyle={[
+        styles.contentContainerStyle,
+        { paddingBottom: tabBarHeight + insets.bottom + 8 },
+      ]}
       contentInsetAdjustmentBehavior="automatic"
       renderItem={({ item }) => (
         <TrackItem
