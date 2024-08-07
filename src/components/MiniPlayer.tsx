@@ -10,12 +10,22 @@ import { Track, useActiveTrack } from "react-native-track-player";
 import { colors, fontSize, images } from "../utils/constants";
 import { PlayPauseButton, SkipToNextButton } from "./PlayerControls";
 import MovingText from "./MovingText";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../navigation/TypeCheck";
 export default function MiniPlayer({ style }: ViewProps) {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const activeTrack: Track | undefined = useActiveTrack();
   if (!activeTrack) return;
 
+  const onPress = () => {
+    navigation.navigate("TrackPlayer", { track: activeTrack });
+  };
   return (
-    <TouchableOpacity style={[styles.container, style]} activeOpacity={0.9}>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      activeOpacity={0.9}
+      onPress={onPress}
+    >
       <Image
         source={
           activeTrack.artwork

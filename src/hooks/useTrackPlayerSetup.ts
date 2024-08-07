@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import TrackPlayer, { Capability, RepeatMode } from "react-native-track-player";
 
 let isReady = false;
-export const useSetupTrackPlayer = (onFinishedLoading?: () => void) => {
+export const useTrackPlayerSetup = (onFinishedLoading?: () => void) => {
   useEffect(() => {
     const setupPlayer = async () => {
       if (isReady) return;

@@ -3,8 +3,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useCallback } from "react";
 import { StyleSheet } from "react-native";
-import { useSetupTrackPlayer } from "./src/hooks/useSetupTrackPlayer";
+import { useTrackPlayerSetup } from "./src/hooks/useTrackPlayerSetup";
 import RootStack from "./src/navigation/RootStack";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -12,13 +13,15 @@ export default function App() {
     // useCallback as this func is used as dependency in useEffect in useSetupTrackPlayer
     SplashScreen.hideAsync();
   }, []);
-  useSetupTrackPlayer(onFinishedSetupTrackPlayer);
+  useTrackPlayerSetup(onFinishedSetupTrackPlayer);
 
   return (
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <RootStack />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <RootStack />
+        </GestureHandlerRootView>
       </NavigationContainer>
     </>
   );

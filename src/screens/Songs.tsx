@@ -1,11 +1,14 @@
 import React, { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { tracks } from "../../assets/data/library";
 import TrackList from "../components/TrackList";
 import { useNavigationSearch } from "../hooks/useNavigationSearch";
 import { Track } from "react-native-track-player";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { tabBarHeight } from "../utils/constants";
 
 export default function Songs() {
+  const insets = useSafeAreaInsets();
   const search = useNavigationSearch({ placeholder: "Find in songs" });
 
   const filteredSongs = useMemo(() => {
@@ -16,7 +19,12 @@ export default function Songs() {
   }, [search]);
   return (
     <View style={styles.container}>
-      <TrackList tracks={filteredSongs} />
+      <ScrollView
+        style={{ marginBottom: tabBarHeight + insets.bottom + 8 }}
+        contentInsetAdjustmentBehavior="automatic"
+      >
+        <TrackList tracks={filteredSongs} scrollEnabled={false} />
+      </ScrollView>
     </View>
   );
 }
