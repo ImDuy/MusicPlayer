@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Track } from "react-native-track-player";
+import { useSelector } from "react-redux";
 import TrackList from "../components/TrackList";
 import { useNavigationSearch } from "../hooks/useNavigationSearch";
 import { RootState } from "../redux/store";
-import { useSelector } from "react-redux";
 
 export default function Songs() {
   const search = useNavigationSearch({ placeholder: "Find in songs" });

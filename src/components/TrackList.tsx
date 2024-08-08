@@ -25,18 +25,23 @@ import {
   updateOnGoingQueue,
   updateOnGoingTrack,
 } from "../redux/playerSlice";
+import QueueControls from "./QueueControls";
 
 interface Props extends Partial<FlatListProps<Track>> {
   displayedTracks: Track[];
   listQueue: Track[];
+  hideQueueControls?: boolean;
 }
 export default function TrackList({
   displayedTracks: tracks,
   listQueue,
+  hideQueueControls = false,
   ...flatListProps
 }: Props) {
   const insets = useSafeAreaInsets();
-  const { onGoingQueue } = useSelector((state: RootState) => state.player);
+  const { onGoingQueue, onGoingTrack } = useSelector(
+    (state: RootState) => state.player
+  );
   const dispatch = useDispatch();
 
   const onTrackSelect = async (selectedTrack: Track) => {
@@ -69,9 +74,16 @@ export default function TrackList({
       data={tracks}
       contentContainerStyle={[
         styles.contentContainerStyle,
-        { paddingBottom: tabBarHeight + insets.bottom + 8 },
+        {
+          paddingBottom: onGoingTrack
+            ? tabBarHeight + insets.bottom + 80
+            : tabBarHeight + insets.bottom + 8,
+        },
       ]}
       contentInsetAdjustmentBehavior="automatic"
+      ListHeaderComponent={
+        !hideQueueControls ? <QueueControls queue={listQueue} /> : undefined
+      }
       renderItem={({ item }) => (
         <TrackItem
           trackUrl={item.url}

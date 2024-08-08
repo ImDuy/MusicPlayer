@@ -5,6 +5,7 @@ export const colors = {
   light_primary: "#944d50",
   background: "#000",
   light_background: "#252525",
+  btn_background: "rgba(47,47,47,0.5)",
   text: "#fff",
   textMuted: "#9ca3af",
   icon: "#fff",
