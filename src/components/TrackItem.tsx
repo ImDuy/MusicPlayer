@@ -1,4 +1,4 @@
-import {} from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
   Image,
@@ -7,10 +7,11 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import { useActiveTrack, useIsPlaying } from "react-native-track-player";
-import { colors, fontSize, images } from "../utils/constants";
-import { Entypo, Ionicons } from "@expo/vector-icons";
 import LoaderKit from "react-native-loader-kit";
+import { useIsPlaying } from "react-native-track-player";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { colors, fontSize, images } from "../utils/constants";
 
 interface Props {
   trackUrl: string;
@@ -26,7 +27,10 @@ export default function TrackItem({
   artist,
   onTrackPress,
 }: Props) {
-  const isActiveTrack = useActiveTrack()?.url === trackUrl;
+  const onGoingTrack = useSelector(
+    (state: RootState) => state.player.onGoingTrack
+  );
+  const isActiveTrack = onGoingTrack?.url === trackUrl;
   const { playing } = useIsPlaying();
   return (
     <TouchableHighlight

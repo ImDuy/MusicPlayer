@@ -23,7 +23,11 @@ export default function Favorites() {
   return (
     <View style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <TrackList tracks={filteredTracks} scrollEnabled={false} />
+        <TrackList
+          displayedTracks={filteredTracks}
+          listQueue={favoriteTracks}
+          scrollEnabled={false}
+        />
       </ScrollView>
     </View>
   );

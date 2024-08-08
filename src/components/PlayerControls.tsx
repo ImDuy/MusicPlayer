@@ -86,7 +86,7 @@ export const PlayPauseButton = ({ iconSize, containerStyle }: Props) => {
     >
       <Animated.View style={animatedStyle}>
         <FontAwesome6
-          name={playing ? "pause" : "play"}
+          name={playing === undefined ? "pause" : playing ? "pause" : "play"}
           size={iconSize}
           color={colors.icon}
         />
@@ -151,7 +151,8 @@ const VolumeButton = ({ iconSize, containerStyle }: Props) => {
 };
 
 const RepeatButton = ({ iconSize, containerStyle }: Props) => {
-  const [repeatMode, setRepeatMode] = useState<RepeatMode>(RepeatMode.Off);
+  const repeateModes = [RepeatMode.Track, RepeatMode.Queue];
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>(RepeatMode.Queue);
 
   useEffect(() => {
     async function getTrackRepeatMode() {
@@ -162,15 +163,14 @@ const RepeatButton = ({ iconSize, containerStyle }: Props) => {
   }, []);
 
   const onPress = () => {
-    if (repeatMode === RepeatMode.Off) setRepeatMode(RepeatMode.Track);
-    else if (repeatMode === RepeatMode.Track) setRepeatMode(RepeatMode.Queue);
-    else setRepeatMode(RepeatMode.Off);
+    const curIdx = repeateModes.indexOf(repeatMode);
+    const nextIdx = (curIdx + 1) % repeateModes.length;
+    setRepeatMode(repeateModes[nextIdx]);
+    TrackPlayer.setRepeatMode(repeateModes[nextIdx]);
   };
 
-  let icon: ComponentProps<typeof MaterialCommunityIcons>["name"] =
-    "repeat-off";
+  let icon: ComponentProps<typeof MaterialCommunityIcons>["name"] = "repeat";
   if (repeatMode === RepeatMode.Track) icon = "repeat-once";
-  else if (repeatMode === RepeatMode.Queue) icon = "repeat";
   return (
     <TouchableOpacity
       style={[styles.btnContainer, containerStyle]}
@@ -192,7 +192,5 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingVertical: 12,
     borderRadius: 40,
-
-    // backgroundColor: "red",
   },
 });

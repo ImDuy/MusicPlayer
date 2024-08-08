@@ -17,16 +17,51 @@ import {
   tabBarHeight,
 } from "../utils/constants";
 import TrackItem from "./TrackItem";
+import deepEqual from "deep-equal";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import {
+  updateIsLoading,
+  updateOnGoingQueue,
+  updateOnGoingTrack,
+} from "../redux/playerSlice";
 
 interface Props extends Partial<FlatListProps<Track>> {
-  tracks: Track[];
+  displayedTracks: Track[];
+  listQueue: Track[];
 }
-export default function TrackList({ tracks, ...flatListProps }: Props) {
+export default function TrackList({
+  displayedTracks: tracks,
+  listQueue,
+  ...flatListProps
+}: Props) {
   const insets = useSafeAreaInsets();
+  const { onGoingQueue } = useSelector((state: RootState) => state.player);
+  const dispatch = useDispatch();
 
-  const onTrackSelect = async (track: Track) => {
-    await TrackPlayer.load(track);
-    await TrackPlayer.play();
+  const onTrackSelect = async (selectedTrack: Track) => {
+    const selectedTrackIdx = listQueue.findIndex(
+      (track) => track.url === selectedTrack.url
+    );
+    const isSameQueue = deepEqual(onGoingQueue, listQueue);
+    dispatch(updateOnGoingTrack(selectedTrack)); //update app state first for immediate UI update on MiniPlayer
+    dispatch(updateIsLoading(true));
+    try {
+      if (isSameQueue) {
+        await TrackPlayer.skip(selectedTrackIdx);
+      } else {
+        //track selected in different queue
+        await TrackPlayer.reset();
+        await TrackPlayer.add(listQueue);
+        await TrackPlayer.skip(selectedTrackIdx);
+        dispatch(updateOnGoingQueue(listQueue));
+      }
+
+      await TrackPlayer.play();
+      dispatch(updateIsLoading(false));
+    } catch (error) {
+      console.log("error when pressing on track list item", error);
+    }
   };
   return (
     <FlatList

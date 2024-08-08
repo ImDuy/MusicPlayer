@@ -1,25 +1,40 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Image,
   StyleSheet,
-  View,
   TouchableOpacity,
+  View,
   ViewProps,
 } from "react-native";
-import { Track, useActiveTrack } from "react-native-track-player";
-import { colors, fontSize, images } from "../utils/constants";
-import { PlayPauseButton, SkipToNextButton } from "./PlayerControls";
-import MovingText from "./MovingText";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import LoaderKit from "react-native-loader-kit";
+import { Event, useTrackPlayerEvents } from "react-native-track-player";
+import { useDispatch, useSelector } from "react-redux";
 import { RootStackParamList } from "../navigation/TypeCheck";
+import { updateOnGoingTrack } from "../redux/playerSlice";
+import { RootState } from "../redux/store";
+import { colors, fontSize, images } from "../utils/constants";
+import MovingText from "./MovingText";
+import { PlayPauseButton, SkipToNextButton } from "./PlayerControls";
+
 export default function MiniPlayer({ style }: ViewProps) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const activeTrack: Track | undefined = useActiveTrack();
-  if (!activeTrack) return;
+  const { onGoingTrack, isLoading } = useSelector(
+    (state: RootState) => state.player
+  );
+  const dispatch = useDispatch();
 
+  // listener to active track changed event for update app state when active track auto change when ended
+  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
+    if (isLoading) return;
+    dispatch(updateOnGoingTrack(event.track ?? null));
+  });
+
+  if (!onGoingTrack) return;
   const onPress = () => {
-    navigation.navigate("TrackPlayer", { track: activeTrack });
+    navigation.navigate("TrackPlayer");
   };
+
   return (
     <TouchableOpacity
       style={[styles.container, style]}
@@ -28,22 +43,39 @@ export default function MiniPlayer({ style }: ViewProps) {
     >
       <Image
         source={
-          activeTrack.artwork
-            ? { uri: activeTrack.artwork }
+          onGoingTrack.artwork
+            ? { uri: onGoingTrack.artwork }
             : images.unknown_track
         }
         style={styles.image}
       />
       <View style={styles.titleContainer}>
         <MovingText
-          text={activeTrack.title ?? ""}
+          text={onGoingTrack.title ?? ""}
           style={styles.title}
           animationThreshold={25}
         />
       </View>
 
-      <PlayPauseButton iconSize={23} />
-      <SkipToNextButton iconSize={23} />
+      {/* player controls */}
+      {isLoading ? (
+        <LoaderKit
+          name="BallClipRotateMultiple"
+          color={colors.icon}
+          style={styles.iconLoading}
+        />
+      ) : (
+        <PlayPauseButton iconSize={23} />
+      )}
+      {isLoading ? (
+        <LoaderKit
+          name="BallClipRotateMultiple"
+          color={colors.icon}
+          style={styles.iconLoading}
+        />
+      ) : (
+        <SkipToNextButton iconSize={23} />
+      )}
     </TouchableOpacity>
   );
 }
@@ -73,4 +105,5 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.text,
   },
+  iconLoading: { width: 23, height: 23, marginRight: 12, marginVertical: 12 },
 });

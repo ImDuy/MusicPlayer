@@ -2,7 +2,7 @@ import { Track } from "react-native-track-player";
 
 export type RootStackParamList = {
   TabNavigator: undefined;
-  TrackPlayer: { track: Track };
+  TrackPlayer: undefined;
 };
 
 export type TabParamList = {

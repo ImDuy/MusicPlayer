@@ -1,6 +1,18 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Event, useTrackPlayerEvents } from "react-native-track-player";
+import { useDispatch, useSelector } from "react-redux";
+import AnimatedHearButton from "../components/AnimatedHearButton";
+import MovingText from "../components/MovingText";
+import PlayerControls from "../components/PlayerControls";
+import PlayerProgressBar from "../components/PlayerProgressBar";
+import { useImageColors } from "../hooks/useImageColors";
+import { RootStackParamList } from "../navigation/TypeCheck";
+import { updateOnGoingTrack } from "../redux/playerSlice";
+import { RootState } from "../redux/store";
 import {
   colors,
   fontSize,
@@ -8,27 +20,19 @@ import {
   screenPadding,
   screenSize,
 } from "../utils/constants";
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
-import { RootStackParamList } from "../navigation/TypeCheck";
-import MovingText from "../components/MovingText";
-import AnimatedHearButton from "../components/AnimatedHearButton";
-import PlayerProgressBar from "../components/PlayerProgressBar";
-import PlayerControls from "../components/PlayerControls";
-import { useImageColors } from "../hooks/useImageColors";
-import { LinearGradient } from "expo-linear-gradient";
 
 export default function FullPlayer() {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { params } = useRoute<RouteProp<RootStackParamList, "TrackPlayer">>();
-  const { title, artist, artwork, rating } = params.track;
+  const track = useSelector((state: RootState) => state.player.onGoingTrack);
 
-  const imageColors = useImageColors(artwork ?? images.unknown_track);
+  const dispatch = useDispatch();
+
+  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
+    dispatch(updateOnGoingTrack(event.track ?? null));
+  });
+
+  const imageColors = useImageColors(track?.artwork ?? images.unknown_track);
   const backgroundColors = {
     primary: imageColors
       ? imageColors.platform === "android"
@@ -39,12 +43,13 @@ export default function FullPlayer() {
       ? imageColors.platform === "android"
         ? imageColors.darkMuted
         : imageColors.primary
-      : "gray",
+      : "black",
   };
   const toggleFavorite = () => {
-    if (rating) navigation.setParams({ track: { ...params.track, rating: 0 } });
-    else navigation.setParams({ track: { ...params.track, rating: 1 } });
+    // if (rating) navigation.setParams({ track: { ...params.track, rating: 0 } });
+    // else navigation.setParams({ track: { ...params.track, rating: 0 } });
   };
+  if (!track) return;
   return (
     <LinearGradient
       style={[styles.container, { paddingTop: top }]}
@@ -55,7 +60,7 @@ export default function FullPlayer() {
       {/* Thumbnail */}
       <View style={styles.imageContainer}>
         <Image
-          source={artwork ? { uri: artwork } : images.unknown_track}
+          source={track.artwork ? { uri: track.artwork } : images.unknown_track}
           style={styles.image}
         />
       </View>
@@ -64,19 +69,19 @@ export default function FullPlayer() {
       <View style={styles.contentContainer}>
         <View style={styles.infoContainer}>
           <MovingText
-            text={title ?? ""}
+            text={track.title ?? ""}
             style={styles.title}
             animationThreshold={30}
           />
-          {artist && (
+          {track.artist && (
             <Text style={styles.artist} numberOfLines={1}>
-              {artist}
+              {track.artist}
             </Text>
           )}
         </View>
         <AnimatedHearButton
           iconSize={28}
-          isFavorite={rating === 1}
+          isFavorite={track.rating === 1}
           onPress={toggleFavorite}
         />
       </View>

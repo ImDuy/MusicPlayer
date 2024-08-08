@@ -19,7 +19,11 @@ export default function Songs() {
   return (
     <View style={styles.container}>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <TrackList tracks={filteredSongs} scrollEnabled={false} />
+        <TrackList
+          displayedTracks={filteredSongs}
+          listQueue={tracks}
+          scrollEnabled={false}
+        />
       </ScrollView>
     </View>
   );
