@@ -151,7 +151,7 @@ const VolumeButton = ({ iconSize, containerStyle }: Props) => {
 };
 
 const RepeatButton = ({ iconSize, containerStyle }: Props) => {
-  const repeateModes = [RepeatMode.Track, RepeatMode.Queue];
+  const repeatModes = [RepeatMode.Track, RepeatMode.Queue];
   const [repeatMode, setRepeatMode] = useState<RepeatMode>(RepeatMode.Queue);
 
   useEffect(() => {
@@ -163,10 +163,10 @@ const RepeatButton = ({ iconSize, containerStyle }: Props) => {
   }, []);
 
   const onPress = () => {
-    const curIdx = repeateModes.indexOf(repeatMode);
-    const nextIdx = (curIdx + 1) % repeateModes.length;
-    setRepeatMode(repeateModes[nextIdx]);
-    TrackPlayer.setRepeatMode(repeateModes[nextIdx]);
+    const curIdx = repeatModes.indexOf(repeatMode);
+    const nextIdx = (curIdx + 1) % repeatModes.length;
+    setRepeatMode(repeatModes[nextIdx]);
+    TrackPlayer.setRepeatMode(repeatModes[nextIdx]);
   };
 
   let icon: ComponentProps<typeof MaterialCommunityIcons>["name"] = "repeat";
