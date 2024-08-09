@@ -8,6 +8,7 @@ import RootStack from "./src/navigation/RootStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -23,7 +24,9 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <GestureHandlerRootView style={{ flex: 1 }}>
-            <RootStack />
+            <BottomSheetModalProvider>
+              <RootStack />
+            </BottomSheetModalProvider>
           </GestureHandlerRootView>
         </NavigationContainer>
       </Provider>

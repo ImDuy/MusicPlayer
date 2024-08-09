@@ -1,5 +1,5 @@
 import deepEqual from "deep-equal";
-import React from "react";
+import React, { useRef } from "react";
 import { FlatList, FlatListProps, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, { Track } from "react-native-track-player";
@@ -15,6 +15,12 @@ import EmptyListNotification from "./EmptyListNotification";
 import ItemDivider from "./ItemDivider";
 import QueueControls from "./QueueControls";
 import TrackItem from "./TrackItem";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import TrackOptionsModal from "./TrackOptionsModal";
+import AddToPlaylistModal from "./AddToPlaylistModal";
 
 interface Props extends Partial<FlatListProps<Track>> {
   displayedTracks: Track[];
@@ -32,15 +38,17 @@ export default function TrackList({
     (state: RootState) => state.player
   );
   const dispatch = useDispatch();
+  const optionsModalRef = useRef<BottomSheetModal>(null);
+  const addToPlaylistModalRef = useRef<BottomSheetModal>(null);
 
-  const onTrackSelect = async (selectedTrack: Track) => {
+  const handleTrackSelect = async (selectedTrack: Track) => {
     const selectedTrackIdx = listQueue.findIndex(
       (track) => track.url === selectedTrack.url
     );
     const isSameQueue = deepEqual(onGoingQueue, listQueue);
-    dispatch(updateOnGoingTrack(selectedTrack)); //update app state first for immediate UI update on MiniPlayer
-    dispatch(updateIsLoading(true));
     try {
+      dispatch(updateIsLoading(true));
+      dispatch(updateOnGoingTrack(selectedTrack)); //update app state first for immediate UI update on MiniPlayer
       if (isSameQueue) {
         await TrackPlayer.skip(selectedTrackIdx);
       } else {
@@ -57,35 +65,49 @@ export default function TrackList({
       console.log("error when pressing on track list item", error);
     }
   };
+
+  const handleTrackOptionPress = (track: Track) => {
+    optionsModalRef.current?.present({
+      track: track,
+      onTrackPlay: handleTrackSelect,
+      addToPlaylistModalRef: addToPlaylistModalRef,
+    });
+  };
   return (
-    <FlatList
-      data={tracks}
-      contentContainerStyle={[
-        styles.contentContainerStyle,
-        {
-          paddingBottom: onGoingTrack
-            ? tabBarHeight + insets.bottom + 80
-            : tabBarHeight + insets.bottom + 8,
-        },
-      ]}
-      contentInsetAdjustmentBehavior="automatic"
-      ListHeaderComponent={
-        !hideQueueControls ? <QueueControls queue={listQueue} /> : undefined
-      }
-      renderItem={({ item }) => (
-        <TrackItem
-          trackUrl={item.url}
-          thumbnailUrl={item.artwork}
-          title={item.title ?? ""}
-          artist={item.artist}
-          onTrackPress={() => onTrackSelect(item)}
-        />
-      )}
-      ItemSeparatorComponent={() => <ItemDivider />}
-      ListFooterComponent={<ItemDivider />}
-      ListEmptyComponent={<EmptyListNotification listType="track" />}
-      {...flatListProps}
-    />
+    <>
+      <FlatList
+        data={tracks}
+        contentContainerStyle={[
+          styles.contentContainerStyle,
+          {
+            paddingBottom: onGoingTrack
+              ? tabBarHeight + insets.bottom + 80
+              : tabBarHeight + insets.bottom + 8,
+          },
+        ]}
+        contentInsetAdjustmentBehavior="automatic"
+        ListHeaderComponent={
+          !hideQueueControls ? <QueueControls queue={listQueue} /> : undefined
+        }
+        renderItem={({ item }) => (
+          <TrackItem
+            trackUrl={item.url}
+            thumbnailUrl={item.artwork}
+            title={item.title ?? ""}
+            artist={item.artist}
+            onTrackPress={() => handleTrackSelect(item)}
+            onOptionsPress={() => handleTrackOptionPress(item)}
+          />
+        )}
+        ItemSeparatorComponent={() => <ItemDivider />}
+        ListFooterComponent={<ItemDivider />}
+        ListEmptyComponent={<EmptyListNotification listType="track" />}
+        {...flatListProps}
+      />
+
+      <TrackOptionsModal ref={optionsModalRef} />
+      <AddToPlaylistModal ref={addToPlaylistModalRef} />
+    </>
   );
 }
 

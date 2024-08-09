@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   View,
 } from "react-native";
 import LoaderKit from "react-native-loader-kit";
@@ -19,6 +20,7 @@ interface Props {
   title: string;
   artist?: string;
   onTrackPress?: () => void;
+  onOptionsPress?: () => void;
 }
 export default function TrackItem({
   trackUrl,
@@ -26,6 +28,7 @@ export default function TrackItem({
   title,
   artist,
   onTrackPress,
+  onOptionsPress,
 }: Props) {
   const onGoingTrack = useSelector(
     (state: RootState) => state.player.onGoingTrack
@@ -84,7 +87,12 @@ export default function TrackItem({
           )}
         </View>
 
-        <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
+        <TouchableOpacity
+          onPress={onOptionsPress}
+          style={styles.optionBtnContainer}
+        >
+          <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
+        </TouchableOpacity>
       </View>
     </TouchableHighlight>
   );
@@ -127,5 +135,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 14,
     left: 15,
+  },
+  optionBtnContainer: {
+    paddingLeft: 4,
+    paddingVertical: 12,
   },
 });

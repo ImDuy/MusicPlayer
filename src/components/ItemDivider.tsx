@@ -1,9 +1,12 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { colors } from "../utils/constants";
 
-export default function ItemDivider() {
-  return <View style={styles.lineSeparator} />;
+interface Props {
+  containerStyle?: StyleProp<ViewStyle>;
+}
+export default function ItemDivider({ containerStyle }: Props) {
+  return <View style={[styles.lineSeparator, containerStyle]} />;
 }
 
 const styles = StyleSheet.create({

@@ -1,11 +1,11 @@
-import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useMemo } from "react";
-import { Playlist } from "../utils/types";
-import { useNavigationSearch } from "../hooks/useNavigationSearch";
+import { Image, StyleSheet, Text } from "react-native";
 import { Track } from "react-native-track-player";
-import TrackList from "./TrackList";
+import { useNavigationSearch } from "../hooks/useNavigationSearch";
 import { colors, fontSize, images, screenSize } from "../utils/constants";
+import { Playlist } from "../utils/types";
 import QueueControls from "./QueueControls";
+import TrackList from "./TrackList";
 
 interface Props {
   playlist: Playlist;
