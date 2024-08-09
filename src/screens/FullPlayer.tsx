@@ -23,7 +23,6 @@ import {
 
 export default function FullPlayer() {
   const { top } = useSafeAreaInsets();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const track = useSelector((state: RootState) => state.player.onGoingTrack);
 
   const dispatch = useDispatch();
