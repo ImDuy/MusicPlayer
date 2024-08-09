@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
 import { Track } from "react-native-track-player";
 import { useSelector } from "react-redux";
 import TrackList from "../components/TrackList";
