@@ -36,12 +36,12 @@ export default function FullPlayer() {
     primary: imageColors
       ? imageColors.platform === "android"
         ? imageColors.average
-        : imageColors.detail
+        : imageColors.primary
       : "gray",
     secondary: imageColors
       ? imageColors.platform === "android"
         ? imageColors.darkMuted
-        : imageColors.primary
+        : imageColors.background
       : "black",
   };
   const toggleFavorite = () => {
