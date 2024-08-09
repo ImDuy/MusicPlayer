@@ -83,7 +83,9 @@ const TrackOptionsModal = forwardRef<BottomSheetModal>(
               <OptionButton
                 onPress={() => {
                   data.onTrackPlay(data.track);
-                  (ref as RefObject<BottomSheetModalMethods>).current?.close();
+                  (
+                    ref as RefObject<BottomSheetModalMethods>
+                  ).current?.dismiss();
                 }}
               >
                 <Ionicons
@@ -93,6 +95,25 @@ const TrackOptionsModal = forwardRef<BottomSheetModal>(
                   style={{ flex: 1 }}
                 />
                 <Text style={[styles.optionText]}>Play this track</Text>
+              </OptionButton>
+              {/* Add to favorites */}
+              <OptionButton
+                onPress={() => {
+                  dispatch(toggleTrackFavorite(data.track));
+                  (
+                    ref as RefObject<BottomSheetModalMethods>
+                  ).current?.dismiss();
+                }}
+              >
+                <FontAwesome
+                  name={data.track.rating === 1 ? "heart" : "heart-o"}
+                  size={30}
+                  color={colors.icon}
+                  style={{ transform: [{ translateX: 5 }], flex: 1 }}
+                />
+                <Text style={styles.optionText}>
+                  {data.track.rating === 1 ? "Remove from" : "Add to"} favorites
+                </Text>
               </OptionButton>
               {/* Add to playlist */}
               <OptionButton
@@ -110,23 +131,6 @@ const TrackOptionsModal = forwardRef<BottomSheetModal>(
                   style={{ transform: [{ translateX: 5 }], flex: 1 }}
                 />
                 <Text style={styles.optionText}>Add to playlist</Text>
-              </OptionButton>
-              {/* Add to favorites */}
-              <OptionButton
-                onPress={() => {
-                  dispatch(toggleTrackFavorite(data.track));
-                  (ref as RefObject<BottomSheetModalMethods>).current?.close();
-                }}
-              >
-                <FontAwesome
-                  name={data.rating === 1 ? "heart" : "heart-o"}
-                  size={30}
-                  color={colors.icon}
-                  style={{ transform: [{ translateX: 5 }], flex: 1 }}
-                />
-                <Text style={styles.optionText}>
-                  {data.rating === 1 ? "Remove from" : "Add to"} favorites
-                </Text>
               </OptionButton>
             </View>
           );

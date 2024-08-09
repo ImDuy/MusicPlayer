@@ -1,5 +1,3 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { forwardRef, useCallback, useMemo } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -7,9 +5,11 @@ import {
   BottomSheetFooterProps,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import EmptyListNotification from "./EmptyListNotification";
-import { colors, fontSize, tabBarHeight } from "../utils/constants";
+import React, { forwardRef, useCallback, useMemo } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { colors, tabBarHeight } from "../utils/constants";
+import EmptyListNotification from "./EmptyListNotification";
 
 const AddToPlaylistModal = forwardRef<BottomSheetModal>(
   function AddToPlaylistModal(_, ref) {

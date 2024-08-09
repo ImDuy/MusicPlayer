@@ -16,13 +16,26 @@ const slice = createSlice({
   initialState,
   reducers: {
     toggleTrackFavorite(state, { payload }: PayloadAction<Track>) {
-      // state.ids.push(payload);
+      state.tracks = state.tracks.map((track) => {
+        if (track.url === payload.url) {
+          return { ...track, rating: track.rating === 1 ? 0 : 1 };
+        }
+        return track;
+      });
     },
-    addToPlaylist(
+    addTrackToPlaylist(
       state,
       { payload }: PayloadAction<{ track: Track; playlistName: string }>
     ) {
-      // state.ids.splice(state.ids.indexOf(payload), 1);
+      state.tracks = state.tracks.map((track) => {
+        if (track.url === payload.track.url) {
+          return {
+            ...track,
+            playlist: [...(track.playlist ?? []), payload.playlistName],
+          };
+        }
+        return track;
+      });
     },
   },
 });
@@ -30,4 +43,4 @@ const slice = createSlice({
 const libraryReducer = slice.reducer;
 export default libraryReducer;
 
-export const { toggleTrackFavorite, addToPlaylist } = slice.actions;
+export const { toggleTrackFavorite, addTrackToPlaylist } = slice.actions;

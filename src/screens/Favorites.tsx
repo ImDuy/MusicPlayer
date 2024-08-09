@@ -8,8 +8,8 @@ import { RootState } from "../redux/store";
 export default function Favorites() {
   const search = useNavigationSearch({ placeholder: "Find in songs" });
   const tracks = useSelector((state: RootState) => state.library.tracks);
+
   const favoriteTracks = useMemo(() => {
-    console.log("filtering favorite tracks");
     return tracks.filter((track: Track) => track.rating === 1);
   }, [tracks]);
 
