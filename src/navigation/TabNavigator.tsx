@@ -25,6 +25,7 @@ export default function TabNavigator() {
       <Tab.Navigator
         initialRouteName="SongsStack"
         screenOptions={{
+          lazy: false,
           headerShown: false,
           // bottom tab bar
           tabBarActiveTintColor: colors.primary,
