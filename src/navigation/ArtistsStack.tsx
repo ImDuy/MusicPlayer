@@ -24,6 +24,7 @@ export default function ArtistsStack() {
           headerStyle: { backgroundColor: colors.background },
           contentStyle: { backgroundColor: colors.background },
           headerTintColor: colors.text,
+          headerShadowVisible: false,
         }}
       />
     </Stack.Navigator>

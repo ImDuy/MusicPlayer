@@ -1,31 +1,20 @@
+import deepEqual from "deep-equal";
 import React from "react";
-import {
-  FlatList,
-  FlatListProps,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, FlatListProps, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TrackPlayer, { Track } from "react-native-track-player";
-import {
-  colors,
-  fontSize,
-  images,
-  screenPadding,
-  tabBarHeight,
-} from "../utils/constants";
-import TrackItem from "./TrackItem";
-import deepEqual from "deep-equal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 import {
   updateIsLoading,
   updateOnGoingQueue,
   updateOnGoingTrack,
 } from "../redux/playerSlice";
+import { RootState } from "../redux/store";
+import { screenPadding, tabBarHeight } from "../utils/constants";
+import EmptyListNotification from "./EmptyListNotification";
+import ItemDivider from "./ItemDivider";
 import QueueControls from "./QueueControls";
+import TrackItem from "./TrackItem";
 
 interface Props extends Partial<FlatListProps<Track>> {
   displayedTracks: Track[];
@@ -92,17 +81,9 @@ export default function TrackList({
           onTrackPress={() => onTrackSelect(item)}
         />
       )}
-      ItemSeparatorComponent={() => <View style={styles.lineSeparator} />}
-      ListFooterComponent={<View style={styles.lineSeparator} />}
-      ListEmptyComponent={
-        <View>
-          <Text style={styles.emptyListInformedText}>No songs found</Text>
-          <Image
-            source={images.unknown_track}
-            style={styles.emptyListInformedImage}
-          />
-        </View>
-      }
+      ItemSeparatorComponent={() => <ItemDivider />}
+      ListFooterComponent={<ItemDivider />}
+      ListEmptyComponent={<EmptyListNotification listType="track" />}
       {...flatListProps}
     />
   );
@@ -111,26 +92,5 @@ export default function TrackList({
 const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingHorizontal: screenPadding.horizontal,
-  },
-  lineSeparator: {
-    borderColor: colors.textMuted,
-    borderWidth: StyleSheet.hairlineWidth,
-    opacity: 0.3,
-    marginVertical: 4,
-    marginHorizontal: 6,
-  },
-  emptyListInformedText: {
-    fontSize: fontSize.base,
-    color: colors.textMuted,
-    fontStyle: "italic",
-    textAlign: "center",
-    marginTop: 20,
-  },
-  emptyListInformedImage: {
-    width: 200,
-    height: 200,
-    marginVertical: 40,
-    alignSelf: "center",
-    opacity: 0.3,
   },
 });

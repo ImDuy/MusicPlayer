@@ -1,42 +1,50 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useMemo } from "react";
+import { Playlist } from "../utils/types";
 import { useNavigationSearch } from "../hooks/useNavigationSearch";
-import { Artist } from "../utils/types";
 import { Track } from "react-native-track-player";
 import TrackList from "./TrackList";
 import { colors, fontSize, images, screenSize } from "../utils/constants";
 import QueueControls from "./QueueControls";
 
 interface Props {
-  artist: Artist;
+  playlist: Playlist;
 }
-export default function ArtistTrackList({ artist }: Props) {
+export default function PlaylistTrackList({ playlist }: Props) {
   const search = useNavigationSearch({
     hideWhenScrolling: true,
     placeholder: "Find in songs",
   });
 
-  const filteredArtistSongs = useMemo(() => {
-    if (!search) return artist.tracks;
-    return artist.tracks.filter((song: Track) =>
-      song.title?.toLowerCase().includes(search.toLowerCase().trim())
+  const filteredPlaylistTracks = useMemo(() => {
+    if (!search) return playlist.tracks;
+    return playlist.tracks.filter((track: Track) =>
+      track.title?.toLowerCase().includes(search.toLowerCase().trim())
     );
-  }, [search, artist.tracks]);
+  }, [search, playlist.tracks]);
+
   return (
     <TrackList
       contentInsetAdjustmentBehavior="automatic"
-      displayedTracks={filteredArtistSongs}
-      listQueue={artist.tracks}
+      displayedTracks={filteredPlaylistTracks}
+      listQueue={playlist.tracks}
       hideQueueControls={true}
       ListHeaderComponent={
         search.length === 0 ? (
           <>
-            <Image source={images.unknown_artist} style={styles.artistImage} />
-            <Text style={styles.artistName} numberOfLines={1}>
-              {artist.name}
+            <Image
+              source={
+                playlist.artworkPreview
+                  ? { uri: playlist.artworkPreview }
+                  : images.unknown_track
+              }
+              style={styles.playlistImage}
+            />
+            <Text style={styles.playlistName} numberOfLines={1}>
+              {playlist.name}
             </Text>
             <QueueControls
-              queue={artist.tracks}
+              queue={playlist.tracks}
               containerStyle={styles.queueControls}
             />
           </>
@@ -47,13 +55,14 @@ export default function ArtistTrackList({ artist }: Props) {
 }
 
 const styles = StyleSheet.create({
-  artistImage: {
+  playlistImage: {
     alignSelf: "center",
-    height: screenSize.width < 380 ? 180 : 200,
-    aspectRatio: 1,
-    borderRadius: 100,
+    width: "80%",
+    height: screenSize.height * 0.4,
+    borderRadius: 12,
+    marginVertical: 4,
   },
-  artistName: {
+  playlistName: {
     alignSelf: "center",
     color: colors.text,
     fontSize: fontSize.lg,

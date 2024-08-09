@@ -11,6 +11,8 @@ export const StackScreenWithSearchBar: NativeStackNavigationOptions = {
   headerTintColor: colors.text,
   headerTitleAlign: Platform.OS === "ios" ? "left" : "center",
   headerTransparent: Platform.OS === "ios" ? true : false,
+  headerShadowVisible: false,
+
   // ios specific
   headerLargeTitle: true,
   headerLargeTitleShadowVisible: false,
@@ -23,7 +25,6 @@ export const StackScreenWithSearchBar: NativeStackNavigationOptions = {
     fontWeight: "800",
   },
   //   android specific
-  headerShadowVisible: false,
   headerStyle: {
     backgroundColor: colors.background,
   },
