@@ -1,4 +1,5 @@
 import { Track } from "react-native-track-player";
+import { Artist } from "../utils/types";
 
 export type RootStackParamList = {
   TabNavigator: undefined;
@@ -10,4 +11,9 @@ export type TabParamList = {
   PlaylistsStack: undefined;
   ArtistsStack: undefined;
   SongsStack: undefined;
+};
+
+export type ArtistsStackParamList = {
+  Artists: undefined;
+  ArtistDetail: { artist: Artist };
 };

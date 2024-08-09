@@ -70,7 +70,6 @@ export default function TrackList({
   };
   return (
     <FlatList
-      {...flatListProps}
       data={tracks}
       contentContainerStyle={[
         styles.contentContainerStyle,
@@ -94,15 +93,17 @@ export default function TrackList({
         />
       )}
       ItemSeparatorComponent={() => <View style={styles.lineSeparator} />}
-      ListEmptyComponent={() => (
+      ListFooterComponent={<View style={styles.lineSeparator} />}
+      ListEmptyComponent={
         <View>
-          <Text style={styles.emptyListInfomedText}>No songs found</Text>
+          <Text style={styles.emptyListInformedText}>No songs found</Text>
           <Image
             source={images.unknown_track}
             style={styles.emptyListInformedImage}
           />
         </View>
-      )}
+      }
+      {...flatListProps}
     />
   );
 }
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     marginHorizontal: 6,
   },
-  emptyListInfomedText: {
+  emptyListInformedText: {
     fontSize: fontSize.base,
     color: colors.textMuted,
     fontStyle: "italic",

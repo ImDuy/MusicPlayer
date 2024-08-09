@@ -98,8 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 20,
     alignItems: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 8,
+    padding: 8,
   },
   image: {
     width: 50,

@@ -17,18 +17,11 @@ export default function Songs() {
     );
   }, [search, tracks]);
   return (
-    <View style={styles.container}>
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <TrackList
-          displayedTracks={filteredSongs}
-          listQueue={tracks}
-          scrollEnabled={false}
-        />
-      </ScrollView>
-    </View>
+    <TrackList
+      contentInsetAdjustmentBehavior="automatic"
+      displayedTracks={filteredSongs}
+      listQueue={tracks}
+      hideQueueControls={search.length !== 0}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});

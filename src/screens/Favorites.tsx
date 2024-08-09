@@ -21,18 +21,12 @@ export default function Favorites() {
     );
   }, [search, favoriteTracks]);
   return (
-    <View style={styles.container}>
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <TrackList
-          displayedTracks={filteredTracks}
-          listQueue={favoriteTracks}
-          scrollEnabled={false}
-        />
-      </ScrollView>
-    </View>
+    <TrackList
+      contentInsetAdjustmentBehavior="automatic"
+      displayedTracks={filteredTracks}
+      listQueue={favoriteTracks}
+      scrollEnabled={false}
+      hideQueueControls={search.length !== 0}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});
