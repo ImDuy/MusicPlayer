@@ -20,11 +20,11 @@ import {
   screenPadding,
   screenSize,
 } from "../utils/constants";
+import { toggleTrackFavorite } from "../redux/librarySlice";
 
 export default function FullPlayer() {
   const { top } = useSafeAreaInsets();
   const track = useSelector((state: RootState) => state.player.onGoingTrack);
-
   const dispatch = useDispatch();
 
   useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
@@ -45,8 +45,12 @@ export default function FullPlayer() {
       : "black",
   };
   const toggleFavorite = () => {
-    // if (rating) navigation.setParams({ track: { ...params.track, rating: 0 } });
-    // else navigation.setParams({ track: { ...params.track, rating: 0 } });
+    if (track) {
+      dispatch(toggleTrackFavorite(track));
+      dispatch(
+        updateOnGoingTrack({ ...track, rating: track.rating === 1 ? 0 : 1 })
+      );
+    }
   };
   if (!track) return;
   return (
