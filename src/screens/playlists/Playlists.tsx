@@ -11,35 +11,14 @@ import { PlaylistsStackParamList } from "../../navigation/TypeCheck";
 import { RootState } from "../../redux/store";
 import { screenPadding, tabBarHeight } from "../../utils/constants";
 import { Playlist } from "../../utils/types";
+import { usePlaylists } from "../../hooks/usePlaylists";
 
 export default function Playlists() {
   const insets = useSafeAreaInsets();
   const search = useNavigationSearch({ placeholder: "Find in playlists" });
-  const tracks = useSelector((state: RootState) => state.library.tracks);
   const { onGoingTrack } = useSelector((state: RootState) => state.player);
   const navigation = useNavigation<NavigationProp<PlaylistsStackParamList>>();
-
-  const playlists: Playlist[] = useMemo(() => {
-    return tracks.reduce((acc, track) => {
-      track.playlist?.forEach((trackPlaylistName) => {
-        const existingPlaylist = acc.find(
-          (playlist) => playlist.name === trackPlaylistName
-        );
-        // duplicate playlist?
-        if (existingPlaylist) {
-          existingPlaylist.tracks.push(track);
-        } else {
-          //met the new playlist in the tracks list
-          acc.push({
-            name: trackPlaylistName,
-            tracks: [track],
-            artworkPreview: track.artwork,
-          });
-        }
-      });
-      return acc;
-    }, [] as Playlist[]);
-  }, [tracks]);
+  const { playlists } = usePlaylists();
 
   const filteredPlaylists = useMemo(() => {
     if (!search) return playlists;
