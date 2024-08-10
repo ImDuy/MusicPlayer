@@ -1,17 +1,19 @@
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useCallback } from "react";
-import { StyleSheet } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { RootSiblingParent } from "react-native-root-siblings";
+import TrackPlayer from "react-native-track-player";
+import { Provider } from "react-redux";
 import { useTrackPlayerSetup } from "./src/hooks/useTrackPlayerSetup";
 import RootStack from "./src/navigation/RootStack";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { RootSiblingParent } from "react-native-root-siblings";
+import playbackService from "./src/utils/playbackService";
 
 SplashScreen.preventAutoHideAsync();
+TrackPlayer.registerPlaybackService(() => playbackService);
 export default function App() {
   const onFinishedSetupTrackPlayer = useCallback(() => {
     // useCallback as this func is used as dependency in useEffect in useSetupTrackPlayer
