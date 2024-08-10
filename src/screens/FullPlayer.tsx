@@ -1,16 +1,16 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Event, useTrackPlayerEvents } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import AnimatedHearButton from "../components/AnimatedHearButton";
+import FullPlayerHeaderControls from "../components/FullPlayerHeaderControls";
 import MovingText from "../components/MovingText";
 import PlayerControls from "../components/PlayerControls";
 import PlayerProgressBar from "../components/PlayerProgressBar";
 import { useImageColors } from "../hooks/useImageColors";
-import { RootStackParamList } from "../navigation/TypeCheck";
+import { toggleTrackFavorite } from "../redux/librarySlice";
 import { updateOnGoingTrack } from "../redux/playerSlice";
 import { RootState } from "../redux/store";
 import {
@@ -20,13 +20,14 @@ import {
   screenPadding,
   screenSize,
 } from "../utils/constants";
-import { toggleTrackFavorite } from "../redux/librarySlice";
-import FullPlayerHeaderControls from "../components/FullPlayerHeaderControls";
+import QueueView from "../components/QueueView";
 
 export default function FullPlayer() {
   const { top } = useSafeAreaInsets();
   const track = useSelector((state: RootState) => state.player.onGoingTrack);
+  const queue = useSelector((state: RootState) => state.player.onGoingQueue);
   const dispatch = useDispatch();
+  const [viewQueue, setViewQueue] = useState(false);
 
   useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
     dispatch(updateOnGoingTrack(event.track ?? null));
@@ -59,18 +60,29 @@ export default function FullPlayer() {
       style={[styles.container, { paddingTop: top }]}
       colors={[backgroundColors.primary, backgroundColors.secondary]}
     >
-      <FullPlayerHeaderControls />
+      <FullPlayerHeaderControls
+        viewQueue={viewQueue}
+        handleViewQueue={() => setViewQueue((prevState) => !prevState)}
+      />
 
-      {/* Thumbnail */}
-      <View style={styles.imageContainer}>
-        <Image
-          source={track.artwork ? { uri: track.artwork } : images.unknown_track}
-          style={styles.image}
-        />
+      <View style={styles.dynamicView}>
+        {/* Thumbnail */}
+        {viewQueue ? (
+          <QueueView playingTrack={track} queue={queue} />
+        ) : (
+          <View style={styles.imageContainer}>
+            <Image
+              source={
+                track.artwork ? { uri: track.artwork } : images.unknown_track
+              }
+              style={styles.image}
+            />
+          </View>
+        )}
       </View>
 
       {/* title, artist */}
-      <View style={styles.contentContainer}>
+      <View style={[styles.contentContainer]}>
         <View style={styles.infoContainer}>
           <MovingText
             text={track.title ?? ""}
@@ -91,19 +103,10 @@ export default function FullPlayer() {
       </View>
 
       {/* Progress bar */}
-      <PlayerProgressBar
-        containerStyle={{
-          marginTop:
-            screenSize.width < 380
-              ? screenSize.height * 0.04
-              : screenSize.height * 0.03,
-        }}
-      />
+      <PlayerProgressBar viewQueue={viewQueue} />
 
       {/* Player controls */}
-      <PlayerControls
-        containerStyle={{ marginTop: screenSize.height * 0.01 }}
-      />
+      <PlayerControls />
     </LinearGradient>
   );
 }
@@ -113,12 +116,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: screenPadding.horizontal + 12,
+    paddingBottom: screenSize.height * 0.04,
   },
+  dynamicView: { flex: 1, justifyContent: "center" },
   imageContainer: {
-    marginTop:
-      screenSize.width < 380
-        ? screenSize.height * 0.02
-        : screenSize.height * 0.04,
+    height: screenSize.width < 380 ? "90%" : "80%",
     backgroundColor: "white",
     shadowColor: "black",
     shadowOffset: {
@@ -132,14 +134,11 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: screenSize.height * 0.5,
+    height: "100%",
     borderRadius: 24,
   },
   contentContainer: {
-    marginTop:
-      screenSize.width < 380
-        ? screenSize.height * 0.06
-        : screenSize.height * 0.08,
+    marginTop: 14,
     flexDirection: "row",
     gap: 30,
     alignItems: "center",

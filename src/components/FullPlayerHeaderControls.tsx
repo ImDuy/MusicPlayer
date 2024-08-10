@@ -1,13 +1,20 @@
-import { Entypo, Fontisto, FontAwesome6 } from "@expo/vector-icons";
+import { AntDesign, Entypo, SimpleLineIcons } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { RootStackParamList } from "../navigation/TypeCheck";
-import { colors } from "../utils/constants";
 import { useDispatch } from "react-redux";
+import { RootStackParamList } from "../navigation/TypeCheck";
 import { updateIsOpeningFullPlayer } from "../redux/playerSlice";
+import { colors } from "../utils/constants";
 
-export default function FullPlayerHeaderControls() {
+interface Props {
+  viewQueue: boolean;
+  handleViewQueue: () => void;
+}
+export default function FullPlayerHeaderControls({
+  viewQueue,
+  handleViewQueue,
+}: Props) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const dispatch = useDispatch();
   return (
@@ -19,10 +26,17 @@ export default function FullPlayerHeaderControls() {
           dispatch(updateIsOpeningFullPlayer(false));
         }}
       >
-        <FontAwesome6 name="chevron-down" size={30} color={colors.icon} />
+        <Entypo name="chevron-thin-down" size={26} color={colors.icon} />
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.btnContainer, styles.btnRight]}>
-        <Fontisto name="play-list" size={28} color={colors.icon} />
+      <TouchableOpacity
+        style={[styles.btnContainer, styles.btnRight]}
+        onPress={handleViewQueue}
+      >
+        {viewQueue ? (
+          <AntDesign name="close" size={26} color={colors.icon} />
+        ) : (
+          <SimpleLineIcons name="playlist" size={24} color={colors.icon} />
+        )}
       </TouchableOpacity>
     </View>
   );

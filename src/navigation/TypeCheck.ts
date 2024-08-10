@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from "@react-navigation/native";
 import { Artist, Playlist } from "../utils/types";
 
 export type RootStackParamList = {
@@ -7,10 +6,10 @@ export type RootStackParamList = {
 };
 
 export type TabParamList = {
-  FavoritesStack: NavigatorScreenParams<FavoritesStackParamList>;
-  PlaylistsStack: NavigatorScreenParams<PlaylistsStackParamList>;
-  ArtistsStack: NavigatorScreenParams<ArtistsStackParamList>;
-  SongsStack: NavigatorScreenParams<SongsStackParamList>;
+  FavoritesStack: undefined;
+  PlaylistsStack: undefined;
+  ArtistsStack: undefined;
+  SongsStack: undefined;
 };
 
 export type SongsStackParamList = {
