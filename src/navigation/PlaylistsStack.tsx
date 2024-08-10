@@ -6,18 +6,26 @@ import Playlists from "../screens/playlists/Playlists";
 import { colors } from "../utils/constants";
 import { StackScreenWithSearchBar } from "../utils/navigation-options";
 import { PlaylistsStackParamList } from "./TypeCheck";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const Stack = createNativeStackNavigator<PlaylistsStackParamList>();
 export default function PlaylistsStack() {
   const navigation = useNavigation<NavigationProp<PlaylistsStackParamList>>();
+  const isOpeningFullPlayer = useSelector(
+    (state: RootState) => state.player.isOpeningFullPlayer
+  );
   useEffect(() => {
-    const unsubscribe = navigation.addListener("blur", () => {
-      navigation.reset({
-        routes: [{ name: "Playlists" }],
+    // if opening full player -> not reset the tab stack screens
+    if (!isOpeningFullPlayer) {
+      const unsubscribe = navigation.addListener("blur", () => {
+        navigation.reset({
+          routes: [{ name: "Playlists" }],
+        });
       });
-    });
-    return unsubscribe;
-  }, [navigation]);
+      return unsubscribe;
+    }
+  }, [navigation, isOpeningFullPlayer]);
 
   return (
     <Stack.Navigator>

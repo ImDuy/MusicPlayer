@@ -4,6 +4,7 @@ import { Track } from "react-native-track-player";
 type PlayerState = {
   onGoingQueue: Track[];
   onGoingTrack: Track | null;
+  isOpeningFullPlayer: boolean;
   isLoading: boolean;
 };
 
@@ -11,6 +12,7 @@ const initialState: PlayerState = {
   onGoingQueue: [],
   onGoingTrack: null,
   isLoading: false,
+  isOpeningFullPlayer: false,
 };
 
 const slice = createSlice({
@@ -26,11 +28,18 @@ const slice = createSlice({
     updateIsLoading(state, { payload }: PayloadAction<boolean>) {
       state.isLoading = payload;
     },
+    updateIsOpeningFullPlayer(state, { payload }: PayloadAction<boolean>) {
+      state.isOpeningFullPlayer = payload;
+    },
   },
 });
 
 const playerReducer = slice.reducer;
 export default playerReducer;
 
-export const { updateOnGoingQueue, updateOnGoingTrack, updateIsLoading } =
-  slice.actions;
+export const {
+  updateOnGoingQueue,
+  updateOnGoingTrack,
+  updateIsLoading,
+  updateIsOpeningFullPlayer,
+} = slice.actions;

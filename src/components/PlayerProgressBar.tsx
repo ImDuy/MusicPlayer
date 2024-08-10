@@ -1,9 +1,9 @@
+import React, { useEffect } from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
-import React, { useEffect, useState } from "react";
-import { colors, fontSize } from "../utils/constants";
 import { Slider } from "react-native-awesome-slider";
-import TrackPlayer, { useProgress } from "react-native-track-player";
 import { useSharedValue } from "react-native-reanimated";
+import TrackPlayer, { useProgress } from "react-native-track-player";
+import { colors } from "../utils/constants";
 import { formatSecondToMinute } from "../utils/helper";
 
 interface Props {

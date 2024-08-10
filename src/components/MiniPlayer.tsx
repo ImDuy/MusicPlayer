@@ -11,7 +11,10 @@ import LoaderKit from "react-native-loader-kit";
 import { Event, useTrackPlayerEvents } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStackParamList } from "../navigation/TypeCheck";
-import { updateOnGoingTrack } from "../redux/playerSlice";
+import {
+  updateIsOpeningFullPlayer,
+  updateOnGoingTrack,
+} from "../redux/playerSlice";
 import { RootState } from "../redux/store";
 import { colors, fontSize, images } from "../utils/constants";
 import MovingText from "./MovingText";
@@ -32,6 +35,7 @@ export default function MiniPlayer({ style }: ViewProps) {
 
   if (!onGoingTrack) return;
   const onPress = () => {
+    dispatch(updateIsOpeningFullPlayer(true));
     navigation.navigate("TrackPlayer");
   };
 

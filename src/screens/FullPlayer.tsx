@@ -21,6 +21,7 @@ import {
   screenSize,
 } from "../utils/constants";
 import { toggleTrackFavorite } from "../redux/librarySlice";
+import FullPlayerHeaderControls from "../components/FullPlayerHeaderControls";
 
 export default function FullPlayer() {
   const { top } = useSafeAreaInsets();
@@ -58,7 +59,7 @@ export default function FullPlayer() {
       style={[styles.container, { paddingTop: top }]}
       colors={[backgroundColors.primary, backgroundColors.secondary]}
     >
-      <DismissPlayerIcon />
+      <FullPlayerHeaderControls />
 
       {/* Thumbnail */}
       <View style={styles.imageContainer}>
@@ -106,18 +107,6 @@ export default function FullPlayer() {
     </LinearGradient>
   );
 }
-
-const DismissPlayerIcon = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  return (
-    <TouchableOpacity
-      style={styles.dismissIconContainer}
-      onPress={() => navigation.goBack()}
-    >
-      <View style={styles.dismissIcon} />
-    </TouchableOpacity>
-  );
-};
 
 const styles = StyleSheet.create({
   // TrackPlayer
@@ -169,17 +158,5 @@ const styles = StyleSheet.create({
     color: colors.text,
     opacity: 0.5,
     maxWidth: "90%",
-  },
-  //   dismissIcon
-  dismissIconContainer: {
-    paddingTop: 8,
-    paddingBottom: 12,
-  },
-  dismissIcon: {
-    alignSelf: "center",
-    width: screenSize.width < 380 ? 90 : 100,
-    height: 6,
-    borderRadius: 8,
-    backgroundColor: colors.icon,
   },
 });
