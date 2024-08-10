@@ -37,8 +37,8 @@ const AddToPlaylistModal = forwardRef<BottomSheetModal>(
     const snapPoints = useMemo(() => ["95%"], []);
 
     const animationConfigs = useBottomSheetTimingConfigs({
-      duration: 100,
-      easing: Easing.exp,
+      duration: 200,
+      easing: Easing.linear,
     });
 
     const renderBackdrop = useCallback(
