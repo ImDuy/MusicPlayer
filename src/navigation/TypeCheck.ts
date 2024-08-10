@@ -12,9 +12,17 @@ export type TabParamList = {
   SongsStack: undefined;
 };
 
+export type SongsStackParamList = {
+  Songs: undefined;
+};
+
 export type ArtistsStackParamList = {
   Artists: undefined;
   ArtistDetail: { artist: Artist };
+};
+
+export type FavoritesStackParamList = {
+  Favorites: undefined;
 };
 
 export type PlaylistsStackParamList = {
