@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Playlist } from "../utils/types";
-import { useMemo } from "react";
 
 export const usePlaylists = () => {
   const tracks = useSelector((state: RootState) => state.library.tracks);

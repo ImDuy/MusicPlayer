@@ -52,6 +52,7 @@ export default function Artists() {
             : tabBarHeight + insets.bottom + 8,
         },
       ]}
+      keyboardDismissMode="on-drag"
       renderItem={({ item }) => (
         <ArtistItem
           name={item.name}

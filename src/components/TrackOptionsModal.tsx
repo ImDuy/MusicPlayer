@@ -9,14 +9,22 @@ import React, { forwardRef, RefObject, useCallback, useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { toggleTrackFavorite } from "../redux/librarySlice";
-import { colors, fontSize, images, screenSize } from "../utils/constants";
+import {
+  colors,
+  fontSize,
+  images,
+  screenSize,
+  tabBarHeight,
+} from "../utils/constants";
 import EmptyListNotification from "./EmptyListNotification";
 import ItemDivider from "./ItemDivider";
 import OptionButton from "./OptionButton";
+import Toast from "react-native-root-toast";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-interface Props {}
 const TrackOptionsModal = forwardRef<BottomSheetModal>(
   function TrackOptionsModal(_, ref) {
+    const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
     const snapPoints = useMemo(
       () => [screenSize.width < 380 ? "60%" : "50%"],
@@ -103,6 +111,17 @@ const TrackOptionsModal = forwardRef<BottomSheetModal>(
                   (
                     ref as RefObject<BottomSheetModalMethods>
                   ).current?.dismiss();
+                  Toast.show(
+                    data.track.rating === 1
+                      ? "Removed from favorites!"
+                      : "Added to favorites!",
+                    {
+                      position: -tabBarHeight - insets.bottom - 18,
+                      backgroundColor: colors.textMuted,
+                      textColor: colors.text,
+                      opacity: 1,
+                    }
+                  );
                 }}
               >
                 <FontAwesome
@@ -121,7 +140,9 @@ const TrackOptionsModal = forwardRef<BottomSheetModal>(
                   (
                     ref as RefObject<BottomSheetModalMethods>
                   ).current?.dismiss();
-                  data.addToPlaylistModalRef.current?.present();
+                  data.addToPlaylistModalRef.current?.present({
+                    track: data.track,
+                  });
                 }}
               >
                 <MaterialIcons

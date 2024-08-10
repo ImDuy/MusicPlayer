@@ -7,5 +7,6 @@ export default function PlaylistDetail() {
   const {
     params: { playlist },
   } = useRoute<RouteProp<PlaylistsStackParamList, "PlaylistDetail">>();
+
   return <PlaylistTrackList playlist={playlist} />;
 }

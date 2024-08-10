@@ -4,11 +4,14 @@ import { colors, fontSize, images } from "../utils/constants";
 
 interface Props {
   listType: string;
+  notiText?: string;
 }
-export default function EmptyListNotification({ listType }: Props) {
+export default function EmptyListNotification({ listType, notiText }: Props) {
   return (
     <View>
-      <Text style={styles.emptyListInformedText}>No {listType} found</Text>
+      <Text style={styles.emptyListInformedText}>
+        {notiText ?? `No ${listType} found`}
+      </Text>
       <Image
         source={
           listType === "artist" ? images.unknown_artist : images.unknown_track

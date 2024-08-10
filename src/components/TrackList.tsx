@@ -1,3 +1,4 @@
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import deepEqual from "deep-equal";
 import React, { useRef } from "react";
 import { FlatList, FlatListProps, StyleSheet } from "react-native";
@@ -11,16 +12,12 @@ import {
 } from "../redux/playerSlice";
 import { RootState } from "../redux/store";
 import { screenPadding, tabBarHeight } from "../utils/constants";
+import AddToPlaylistModal from "./AddToPlaylistModal";
 import EmptyListNotification from "./EmptyListNotification";
 import ItemDivider from "./ItemDivider";
 import QueueControls from "./QueueControls";
 import TrackItem from "./TrackItem";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
 import TrackOptionsModal from "./TrackOptionsModal";
-import AddToPlaylistModal from "./AddToPlaylistModal";
 
 interface Props extends Partial<FlatListProps<Track>> {
   displayedTracks: Track[];
@@ -85,6 +82,7 @@ export default function TrackList({
               : tabBarHeight + insets.bottom + 8,
           },
         ]}
+        keyboardDismissMode="on-drag"
         contentInsetAdjustmentBehavior="automatic"
         ListHeaderComponent={
           !hideQueueControls ? <QueueControls queue={listQueue} /> : undefined
