@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
 import {
   FlatList,
   Image,
@@ -6,11 +8,9 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import React from "react";
+import LoaderKit from "react-native-loader-kit";
 import TrackPlayer, { Track } from "react-native-track-player";
 import { colors, fontSize, images } from "../utils/constants";
-import LoaderKit from "react-native-loader-kit";
-import { Ionicons } from "@expo/vector-icons";
 
 interface Props {
   playingTrack: Track;

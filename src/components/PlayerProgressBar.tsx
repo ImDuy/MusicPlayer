@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Slider } from "react-native-awesome-slider";
 import Animated, {
   useAnimatedStyle,
@@ -47,7 +47,7 @@ export default function PlayerProgressBar({ viewQueue }: Props) {
     if (viewQueue) {
       marginTopAnimated.value = withTiming(12, { duration: 100 });
       timeContainerAnimated.value = withTiming(
-        { height: 0, marginTop: 0 },
+        { height: 0, marginTop: 4 },
         { duration: 100 }
       );
     } else {
