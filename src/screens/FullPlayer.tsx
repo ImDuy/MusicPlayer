@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import Toast from "react-native-root-toast";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Event, useTrackPlayerEvents } from "react-native-track-player";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,7 @@ import FullPlayerHeaderControls from "../components/FullPlayerHeaderControls";
 import MovingText from "../components/MovingText";
 import PlayerControls from "../components/PlayerControls";
 import PlayerProgressBar from "../components/PlayerProgressBar";
+import QueueView from "../components/QueueView";
 import { useImageColors } from "../hooks/useImageColors";
 import { toggleTrackFavorite } from "../redux/librarySlice";
 import { updateOnGoingTrack } from "../redux/playerSlice";
@@ -20,10 +22,10 @@ import {
   screenPadding,
   screenSize,
 } from "../utils/constants";
-import QueueView from "../components/QueueView";
 
+let toast: any;
 export default function FullPlayer() {
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
   const track = useSelector((state: RootState) => state.player.onGoingTrack);
   const queue = useSelector((state: RootState) => state.player.onGoingQueue);
   const dispatch = useDispatch();
@@ -48,6 +50,16 @@ export default function FullPlayer() {
   };
   const toggleFavorite = () => {
     if (track) {
+      if (toast) Toast.hide(toast);
+      toast = Toast.show(
+        track.rating === 1 ? "Removed from favorites!" : "Added to favorites!",
+        {
+          position: -bottom - (screenSize.height * 34) / 100,
+          backgroundColor: colors.textMuted,
+          textColor: colors.text,
+          opacity: 1,
+        }
+      );
       dispatch(toggleTrackFavorite(track));
       dispatch(
         updateOnGoingTrack({ ...track, rating: track.rating === 1 ? 0 : 1 })
