@@ -45,16 +45,16 @@ export default function PlayerProgressBar({ viewQueue }: Props) {
 
   useEffect(() => {
     if (viewQueue) {
-      marginTopAnimated.value = withTiming(12, { duration: 100 });
+      marginTopAnimated.value = withTiming(12, { duration: 200 });
       timeContainerAnimated.value = withTiming(
         { height: 0, marginTop: 4 },
-        { duration: 100 }
+        { duration: 200 }
       );
     } else {
-      marginTopAnimated.value = withTiming(22, { duration: 100 });
+      marginTopAnimated.value = withTiming(22, { duration: 200 });
       timeContainerAnimated.value = withTiming(
         { height: 16, marginTop: 10 },
-        { duration: 100 }
+        { duration: 200 }
       );
     }
   }, [viewQueue, marginTopAnimated, timeContainerAnimated]);
