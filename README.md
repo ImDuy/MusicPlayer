@@ -6,6 +6,7 @@
 - Play, pause, skip, loop songs
 - Search songs
 - Add to favorites/playlists
+- Background audio playback support
 ## Built With 🛠
 
 - React Native (Expo)
